@@ -304,6 +304,8 @@ const baseEn = {
   // AI tab, other sections
   "ai.learn": "Learn from conversations",
   "ai.learnHint": "Save clearly lasting preferences without being asked. Off = only explicit “remember …”.",
+  "ai.browse": "Web browsing (Kitesurf)",
+  "ai.browseHint": "Lets the agent read public web pages you link to, through Cloudflare's free Kitesurf browser. Max 100 pages a day.",
   "ai.demo": "Demo mode",
   "ai.demoHint": "A simple offline responder instead of a real model. Useful when every quota is spent. Never turned on automatically.",
   "ai.limits": "Generation & execution limits",
@@ -641,6 +643,8 @@ const baseHe: Record<keyof typeof baseEn, string> = {
   // AI tab
   "ai.learn": "למידה משיחות",
   "ai.learnHint": "שמירת העדפות קבועות בלי לבקש. כבוי = רק \"תזכור…\" מפורש.",
+  "ai.browse": "גלישה באינטרנט (Kitesurf)",
+  "ai.browseHint": "מאפשר לסוכן לקרוא דפי אינטרנט ציבוריים דרך הדפדפן החינמי Kitesurf של Cloudflare. עד 100 דפים ביום.",
   "ai.demo": "מצב הדגמה",
   "ai.demoHint": "משיב פשוט ללא מודל אמיתי. שימושי כשכל המכסות נגמרו. לעולם לא מופעל אוטומטית.",
   "ai.limits": "מגבלות יצירה והרצה",

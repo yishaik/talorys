@@ -215,7 +215,7 @@ function AppearanceSection() {
 function useSaveSettings() {
   const qc = useQueryClient();
   const { t } = useLocale();
-  type Patch = Partial<Omit<Settings, "limits" | "memoryHistory" | "proactive">> & { limits?: Partial<Limits>; memoryHistory?: Partial<MemoryHistorySettings>; proactive?: Partial<ProactiveSettings> };
+  type Patch = Partial<Omit<Settings, "limits" | "memoryHistory" | "proactive" | "browsing">> & { limits?: Partial<Limits>; memoryHistory?: Partial<MemoryHistorySettings>; proactive?: Partial<ProactiveSettings>; browsing?: Partial<Settings["browsing"]> };
   return useApiMutation((patch: Patch) => api<{ settings: Settings }>("/settings", { method: "PATCH", body: patch }), {
     success: t("settings.saved"),
     onSuccess: (r) => {
@@ -289,6 +289,11 @@ function AiTab({ settings }: { settings: Settings }) {
         <Row label={t("ai.learn")} hint={t("ai.learnHint")}>
           <div className="flex justify-end">
             <Switch checked={settings.autoMemory} onChange={(v) => save.mutate({ autoMemory: v })} label={t("ai.learn")} />
+          </div>
+        </Row>
+        <Row label={t("ai.browse")} hint={t("ai.browseHint")}>
+          <div className="flex justify-end">
+            <Switch checked={settings.browsing.enabled} onChange={(v) => save.mutate({ browsing: { enabled: v } })} label={t("ai.browse")} />
           </div>
         </Row>
         <Row label={t("ai.demo")} hint={t("ai.demoHint")}>

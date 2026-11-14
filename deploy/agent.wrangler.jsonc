@@ -12,6 +12,9 @@
   "workers_dev": false,
   "preview_urls": false,
   "ai": { "binding": "AI" },
+  // Browser Run, for browse_page's Kitesurf engine (free in beta; docs/browsing.md). No API token is
+  // needed for the binding; the deploy token needs Browser Rendering/Browser Run Edit to attach it.
+  "browser": { "binding": "BROWSER" },
   "durable_objects": {
     "bindings": [{ "name": "TalorysAgent", "class_name": "TalorysAgent" }]
   },
@@ -23,7 +26,7 @@
   "vars": {
     "OPEN_CONNECTOR_URL": "https://open-connector.yishai-kaminsky.workers.dev",
     "TALORYS_INSTALLATION_ID": "lxl5w9o0",
-    "TALORYS_DEPLOYED_VERSION": "0.1.19-hybrid-recall",
+    "TALORYS_DEPLOYED_VERSION": "0.1.20-kitesurf",
     "TALORYS_DEFAULT_TIMEZONE": "UTC",
     "TALORYS_AGENT_NAME": "Talorys",
     "PUBLIC_APP_URL": "https://talorys-lxl5w9o0-web.pages.dev"

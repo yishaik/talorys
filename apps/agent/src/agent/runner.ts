@@ -184,6 +184,7 @@ export class AgentRunner {
           conversationSummary: summary,
           abridgedHistory,
           connectors: this.ext?.connectors,
+      browsing: this.ext?.browsing,
           threadContext: liveContext,
         });
       // The owner's context limit, cut to what the smallest model in the chain takes (model-caps.ts).
@@ -388,6 +389,7 @@ export class AgentRunner {
       ),
       scheduled: true,
       connectors: this.ext?.connectors,
+      browsing: this.ext?.browsing,
     });
     let text = "";
     const results: ScheduledToolResult[] = [];

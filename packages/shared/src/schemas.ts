@@ -566,6 +566,23 @@ export const proactiveSettingsSchema = z.object({
 });
 export type ProactiveSettings = z.infer<typeof proactiveSettingsSchema>;
 
+/**
+ * Web browsing (docs/browsing.md): the `browse_page` tool reads a public page through Cloudflare
+ * Browser Run's Kitesurf engine (free in beta), or a plain fetch when the Worker has no browser
+ * binding. On by default. Chromium is a paid-quota fallback, off by default and capped per day.
+ */
+export const browsingSettingsSchema = z.object({
+  enabled: z.boolean().default(true),
+  /** When Kitesurf cannot render a page, retry once with Browser Run's default Chromium browser. */
+  chromiumFallback: z.boolean().default(false),
+  /** Pages the agent may read per UTC day, all engines together. */
+  maxPagesPerDay: z.number().int().min(0).max(1000).default(100),
+  /** Chromium fallbacks per UTC day (Workers Free has 10 browser minutes a day). */
+  maxChromiumPerDay: z.number().int().min(0).max(200).default(10),
+});
+export type BrowsingSettings = z.infer<typeof browsingSettingsSchema>;
+export const DEFAULT_BROWSING_SETTINGS: BrowsingSettings = { enabled: true, chromiumFallback: false, maxPagesPerDay: 100, maxChromiumPerDay: 10 };
+
 export type SuggestionKind = (typeof SUGGESTION_KINDS)[number];
 export type SuggestionStatus = (typeof SUGGESTION_STATUSES)[number];
 
@@ -608,6 +625,8 @@ export const settingsSchema = z
     proactive: proactiveSettingsSchema.default(proactiveSettingsSchema.parse({})),
     /** Settings stored before on-device models existed read as the defaults. */
     device: deviceSettingsSchema.default(DEFAULT_DEVICE_SETTINGS),
+    /** Settings stored before web browsing existed read as the defaults (on). */
+    browsing: browsingSettingsSchema.default(DEFAULT_BROWSING_SETTINGS),
   })
   .refine((v) => isModelIdFor(v.modelProvider, v.model), { path: ["model"], message: "Not a model id of the chosen provider" })
   .refine((v) => !v.fallback.enabled || modelRef.safeParse({ provider: v.fallback.provider, model: v.fallback.model }).success, {
@@ -635,6 +654,12 @@ export const settingsUpdateSchema = z.object({
     quietEndHour: proactiveSettingsSchema.shape.quietEndHour.removeDefault().optional(),
   }).optional(),
   device: deviceSettingsSchema.partial().optional(),
+  browsing: z.object({
+    enabled: browsingSettingsSchema.shape.enabled.removeDefault().optional(),
+    chromiumFallback: browsingSettingsSchema.shape.chromiumFallback.removeDefault().optional(),
+    maxPagesPerDay: browsingSettingsSchema.shape.maxPagesPerDay.removeDefault().optional(),
+    maxChromiumPerDay: browsingSettingsSchema.shape.maxChromiumPerDay.removeDefault().optional(),
+  }).optional(),
 });
 
 /** A model as the Settings picker shows it. `tools` = function calling; `free` = no charge beyond the provider's free allowance. */
