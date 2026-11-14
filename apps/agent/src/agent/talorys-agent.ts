@@ -23,6 +23,7 @@ import type { AIProvider } from "../ai/provider";
 import { localDayBounds, formatLocal } from "../services/time";
 import { semanticExtensions } from "../semantic";
 import { toolsWithOpenConnector, withOpenConnector } from "../openconnector";
+import { withBrowsing } from "../browsing";
 import type { ToolDefinition } from "../tools";
 import { runProactiveScan } from "../proactive/engine";
 import { syncProactiveSchedule } from "../proactive/schedule";
@@ -216,7 +217,7 @@ export class TalorysAgent extends Agent<Env, AgentState> {
     return new AgentRunner(
       this.services,
       this.aiProvider(),
-      withOpenConnector(semanticExtensions(this.services, this.env), this.services, this.env),
+      withBrowsing(withOpenConnector(semanticExtensions(this.services, this.env), this.services, this.env), this.services, this.env),
       subrequestLimitFrom(this.env.TALORYS_SUBREQUEST_LIMIT),
     );
   }

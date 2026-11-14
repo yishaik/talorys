@@ -12,4 +12,6 @@ export interface RunnerExtensions {
   tools: ToolDefinition[];
   /** True when external apps are reachable through OpenConnector, so the prompt says so. */
   connectors?: boolean;
+  /** True when the browse_page tool is listed (src/browsing), so the prompt says the agent can read web pages. */
+  browsing?: boolean;
 }

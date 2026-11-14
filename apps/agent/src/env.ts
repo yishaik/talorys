@@ -50,6 +50,11 @@ export interface Env {
    * Worker secret. Messages go out through FCM HTTP v1 signed by the Worker. Off without it.
    */
   FCM_SERVICE_ACCOUNT?: string;
+  /**
+   * Cloudflare Browser Run binding (`"browser": { "binding": "BROWSER" }`). browse_page renders pages
+   * with its Kitesurf engine; without it browse_page falls back to a plain fetch (docs/browsing.md).
+   */
+  BROWSER?: BrowserRun;
   /** Absolute origin notification deep links point at (the web app URL); defaults to the request origin. */
   PUBLIC_APP_URL?: string;
 }

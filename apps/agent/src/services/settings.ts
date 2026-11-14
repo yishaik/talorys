@@ -1,4 +1,4 @@
-import { DEFAULT_DEVICE_SETTINGS, DEFAULT_FALLBACK, DEFAULT_LIMITS, DEFAULT_MODEL, DEFAULT_MEMORY_HISTORY, RETIRED_WORKERS_AI_MODELS, type Settings, settingsSchema, settingsUpdateSchema } from "@talorys/shared";
+import { DEFAULT_BROWSING_SETTINGS, DEFAULT_DEVICE_SETTINGS, DEFAULT_FALLBACK, DEFAULT_LIMITS, DEFAULT_MODEL, DEFAULT_MEMORY_HISTORY, RETIRED_WORKERS_AI_MODELS, type Settings, settingsSchema, settingsUpdateSchema } from "@talorys/shared";
 import type { z } from "zod";
 import { type Database, now } from "../db/database";
 import { ValidationError } from "../api/errors";
@@ -17,6 +17,7 @@ export const DEFAULT_SETTINGS: Settings = {
   memoryHistory: { ...DEFAULT_MEMORY_HISTORY },
   proactive: { enabled: false, scanEveryHours: 3, maxPerRun: 3, quietStartHour: 22, quietEndHour: 7 },
   device: { ...DEFAULT_DEVICE_SETTINGS },
+  browsing: { ...DEFAULT_BROWSING_SETTINGS },
 };
 
 const SETTINGS_KEY = "app.settings";
@@ -40,6 +41,7 @@ export class SettingsService {
       fallback: { ...DEFAULT_SETTINGS.fallback, ...(stored.fallback ?? {}) },
       proactive: { ...DEFAULT_SETTINGS.proactive, ...(stored.proactive ?? {}) },
       device: { ...DEFAULT_SETTINGS.device, ...(stored.device ?? {}) },
+      browsing: { ...DEFAULT_SETTINGS.browsing, ...(stored.browsing ?? {}) },
     };
     const parsed = settingsSchema.safeParse(replaceRetiredModels(merged));
     if (parsed.success) return parsed.data;
@@ -60,6 +62,7 @@ export class SettingsService {
       fallback: { ...current.fallback, ...stripUndefined(parsedPatch.data.fallback ?? {}) },
       proactive: { ...current.proactive, ...stripUndefined(parsedPatch.data.proactive ?? {}) },
       device: { ...current.device, ...stripUndefined(parsedPatch.data.device ?? {}) },
+      browsing: { ...current.browsing, ...stripUndefined(parsedPatch.data.browsing ?? {}) },
     };
     const parsed = settingsSchema.safeParse(next);
     if (!parsed.success) throw ValidationError.fromZod(parsed.error);
